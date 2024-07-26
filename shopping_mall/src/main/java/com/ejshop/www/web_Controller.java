@@ -35,6 +35,18 @@ public class web_Controller {
 		return null;
 	}
 	
+	//HttpSession(interface) : 세션을 빠르게 구현하는 방식
+	//빠르게 세션 만들때 쓰는 선생님 코드 스타일 => 이것 알고 써야함!! 막쓰면 안됨
+	@PostMapping("loginok.do")
+	public String loginok(@RequestParam(value = "", required = false) String mid, HttpSession session) {
+		if(mid != null) {
+		session.setAttribute("mid", mid);
+		session.setMaxInactiveInterval(1800);
+		}
+		return null;
+	}
+	
+	/*//정통방식
 	@PostMapping("/loginok.do")
 	public String loginok(String mid, HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -43,7 +55,7 @@ public class web_Controller {
 		System.out.println(mid);
 		return null;
 	}
-	
+	*/
 	
 	
 	//http://abc, http://www.abc 이런식으로 아무렇게나 접속할 수 있기때문에 크로스오리진쓴다.
