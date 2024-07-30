@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Shopping_admin">
+
+
+ <!-- 관리자 등록 --> 
+<insert id="admin_insert">
+insert into admin_join (aidx,aid,apass,aname,aemail,atel,adept,aposition,ajoindate,authz)
+values ('0',#{aid},#{apass},#{aname},#{aemail},#{atel},#{adept},#{aposition},now(),'미승인')
+</insert> 
+
+<!-- 관리자 로그인 -->
 <select id="admin_login" parameterType="Map" resultType="adminuserdao">
 select * from admin_join
 <choose>
-	<when test="part==admin"> <!-- 관리자 로그인 -->
-		where aid=#{aid} and apass=#{apass}
+	<when test="part==admin">
+		where aid=#{aid} and apass=#{apass} and authz=#{authz}
 	</when>
 	<otherwise>
 		order by aidx desc
