@@ -3,4 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<typeAliases>
+	<typeAlias alias="userdao" type="com.ejshop.www.user_dao"/>
+	</typeAliases>
 </configuration>

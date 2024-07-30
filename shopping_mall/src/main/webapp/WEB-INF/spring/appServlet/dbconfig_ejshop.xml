@@ -15,21 +15,21 @@
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-<context:annotation-config/> <!-- template 사용하지 못함 -->
-	<bean id="dbinfo2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+<context:annotation-config/>
+	<bean id="dbinfo" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 	<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-	<property name="url" value="jdbc:mysql://localhost:3306/cms"/>
-	<property name="username" value="hana"/>
-	<property name="password" value="hana1234"/>
+	<property name="url" value="jdbc:mysql://localhost:3306/ejshop"/>
+	<property name="username" value="ej"/>
+	<property name="password" value="ej0420"/>
 	</bean>
 	
-	<bean id="factory2" class="org.mybatis.spring.SqlSessionFactoryBean">
-	<property name="dataSource" ref="dbinfo2"/>
-	<property name="configLocation" value="classpath:/META-INF/config.xml"/>
-	<property name="mapperLocations" value="classpath:/META-INF/mapper.xml"/>
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dbinfo"/>
+	<property name="configLocation" value="classpath:/META-INF/config_ejshop.xml"/>
+	<property name="mapperLocations" value="classpath:/META-INF/mapper_ejshop.xml"/>
 	</bean>
 	
-	<bean id="template2" class="org.mybatis.spring.SqlSessionTemplate">
-	<constructor-arg name="sqlSessionFactory" ref="factory2"/>
+	<bean id="template" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg name="sqlSessionFactory" ref="factory"/>
 	</bean>
 </beans>

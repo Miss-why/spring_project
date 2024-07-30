@@ -1,9 +1,10 @@
 package com.ejshop.www;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -18,10 +19,74 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
-public class web_Controller {
+/*public class web_Controller {*/ //[ md5 연결방법1 - resource]
+
+// md5 : 회원가입, 로그인, 패그워드 변경, 1:1 문의, 자유게시판, 상품구매.... 등에서 사용
+public class web_Controller extends md5_pass { //[md5 연결방법2 - extends]
 	
 	PrintWriter pw =null;
 	
+	
+	/*
+	★ 잊지마
+	- DAO를 가져오려면 => @	ModelAttribute 사용 (단, 회원가입시 무조건 모델 어트리뷰트 당연히 써야함!!)
+	- DAO를 안쓰고 정보 몇 개만 가져올 것이라고 판단되면, 자료형 객체 or @RequestParam을 이용해서 사용
+	((@RequestParam => null으로 날라올때 조건처리가 간단한게 장점)
+	*/
+	
+	@Resource(name = "userselect")
+	private user_select us; //모듈 로드
+	
+	/*각각 id/pw 두개 맵핑 안나누고 하나로 해도 됨.*/
+	@PostMapping("/idsearch.do")
+	public String idsearch(String[] uname, String uemail, HttpServletResponse res) throws Exception{ //아이디 찾기
+		res.setContentType("text/html;charset=utf-8");
+		
+		this.pw = res.getWriter();
+		try {
+			if(uname[0] == null || uemail==null) {//단, 자료형 객체로 받아서 사용시 조건문 필수적으로 걸어야 null일때 에러 안남!!
+			this.pw.print("<script>"
+					+"alert('올바른 접근 방식이 아닙니다.');"
+					+"history.go(-1);"
+					+"</script>");
+			}
+			else {
+				ArrayList<Object> onedata = us.search_id(uname[0], uemail); //받는 것 arraylist로 받을 것임
+			}
+		}
+		catch (Exception e) {
+			System.out.println(e);
+			this.pw.print("<script>"
+					+"alert('Database 문제로 인하여 해당 정보가 확인되지 않습니다.');"
+					+"history.go(-1);"
+					+"</script>");
+		}
+		finally {
+			this.pw.close();
+		}
+		return null;
+	}
+	
+	@PostMapping("/passmodify.do")
+	public String passmodify() { //패스워드 변경
+		return null;
+	}
+	
+	
+	
+	//@Resource(name="md5pass")
+	//@ImportResource(name="md5pass")
+	//private md5_pass md; //[방법1 - resource로 하는법]
+	
+	//패스워드 변경 여부 체크(MD5)
+	@GetMapping("/passwd.do")
+	public String passwd() {
+		String pwd = "a1234";
+		//String result = md.md5_makeing(pwd); // [방법1]
+		String result = this.md5_makeing(pwd); //[방법2]
+		System.out.println(result);
+		return null;
+	}
 	
 	@GetMapping("/restapi/do")
 	//@SessionAttribut :  세션이 이미 등록 되어 있을 경우, 해당 정보를 가져올 수 있음
