@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -21,7 +22,7 @@ public class admin_controller {
 	//do파일로 jsp파일 실행
 	@RequestMapping("/admin/add_master.do")
 	public ModelAndView add_master() {
-		ModelAndView mv = new ModelAndView("./admin/add_master");
+		ModelAndView mv = new ModelAndView("./add_master");
 		return mv;
 	}
 	@RequestMapping("/admin/admin_list.do")
@@ -41,6 +42,10 @@ public class admin_controller {
 	}
 	
 	
+	//아이디중복체크
+
+	
+	
 	//패스워드 암호화(MD5)
 	@Resource(name="md5pw")
 	private md5 md;
@@ -56,9 +61,6 @@ public class admin_controller {
 	private ArrayList<Object> admin_join(@ModelAttribute admin_user_dao dao, HttpServletResponse res) throws Exception {
 		res.setContentType("text/html;charset=utf-8");
 		this.pw= res.getWriter();
-		
-		System.out.println(dao.getAtel());
-		
 		try {
 		int callback= jm.admin_insert(dao);
 		if(callback > 0) {

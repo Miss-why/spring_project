@@ -18,12 +18,19 @@ public class ajoinok {
 	//DB에 회원가입에서 넘어온 DAO값 저장
 	public int admin_insert(admin_user_dao dao) {
 		
+		
 		//비밀번호 암호화
-        String originalapass = dao.getApass(); //원래 비밀번호호 가져오기
+        String originalapass = dao.getApass(); //원래 비밀번호 가져오기
         String apasschange = md.md5_makeing(originalapass); //MD5 암호화
+        dao.setApass(apasschange); //암호화된 비밀번호를 DAO에 설정.
         
-        //암호화된 비밀번호를 DAO에 설정.
-        dao.setApass(apasschange);
+        //핸드폰번호 합치기
+        String originalatel = dao.getAtel();
+        String atelsum = originalatel.replaceAll(",", "");
+        dao.setAtel(atelsum);
+        
+        //아이디 중복체크
+        
 		
         //DB에 저장
 		int result = tm.insert("Shopping_admin.admin_insert",dao);
