@@ -4,13 +4,18 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,30 +25,26 @@ public class admin_controller {
 	PrintWriter pw =null;
 	
 	//do파일로 jsp파일 실행
-	@RequestMapping("/admin/add_master.do")
+	@RequestMapping("/shoping_admin/add_master.do")
 	public ModelAndView add_master() {
-		ModelAndView mv = new ModelAndView("./add_master");
+		ModelAndView mv = new ModelAndView("./shoping_admin/add_master");
 		return mv;
 	}
-	@RequestMapping("/admin/admin_list.do")
+	@RequestMapping("/shoping_admin/admin_list.do")
 	public ModelAndView admin_list() {
-		ModelAndView mv = new ModelAndView("./admin/admin_list");
+		ModelAndView mv = new ModelAndView("./shoping_admin/admin_list");
 		return mv;
 	}
-	@RequestMapping("/admin/index.do")
+	@RequestMapping("/shoping_admin/index.do")
 	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView("./admin/index");
+		ModelAndView mv = new ModelAndView("./shoping_admin/index");
 		return mv;
 	}
-	@RequestMapping("/admin/admin_siteinfo.do")
+	@RequestMapping("/shoping_admin/admin_siteinfo.do")
 	public ModelAndView siteinfo() {
-		ModelAndView mv = new ModelAndView("./admin/admin_siteinfo");
+		ModelAndView mv = new ModelAndView("./shoping_admin/admin_siteinfo");
 		return mv;
 	}
-	
-	
-	//아이디중복체크
-
 	
 	
 	//패스워드 암호화(MD5)
@@ -55,19 +56,23 @@ public class admin_controller {
 	
 	//관리자 회원가입
 	@Resource(name="admin_joinok")
-	private ajoinok jm;
+	private ajoinok jm; //관리자 회원가입 module
 	
-	@PostMapping("/admin//ajoinok.do")
+	@Autowired
+	private admin_user_dao aud;
+	
+	@PostMapping("/ajoinok.do")
 	private ArrayList<Object> admin_join(@ModelAttribute admin_user_dao dao, HttpServletResponse res) throws Exception {
 		res.setContentType("text/html;charset=utf-8");
 		this.pw= res.getWriter();
 		try {
-		int callback= jm.admin_insert(dao);
-		if(callback > 0) {
-			this.pw.print("<script>"
-					+ "alert('정상적으로 등록 완료 되었습니다.');"
-					+ "location.href='./index.do';"
-					+ "</script>");
+			int callback = jm.admin_insert(dao);
+			if (callback > 0) {
+				this.pw.print(
+						"<script>" 
+						+ "alert('정상적으로 등록 완료 되었습니다.');"
+						+ "location.href='./index.do';" 
+						+ "</script>");
 		}
 		}catch(Exception e) {
 			this.pw.print("<script>"
@@ -80,8 +85,22 @@ public class admin_controller {
 		return null;
 	}
 	
+    // 아이디 중복 체크
+	@PostMapping("/checkid.do")
+	@ResponseBody
+	public String checkId(@RequestParam("aid") String aid) {
+		String result = "";
+		try {
+			result = jm.checkid(aid);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 로그 기록
+			result = "아이디 중복 체크 중 오류가 발생했습니다.";
+		}
+		return result;
+	}
+	
 	//로그인
-	@PostMapping("/admin/admin_main.do")
+	@PostMapping("/shopping_admin/admin_main.do")
 	private String admin_login(String aid, String apass, HttpServletResponse res) throws Exception{
 			res.setContentType("text/html;charset=utf-8");
 			this.pw = res.getWriter();

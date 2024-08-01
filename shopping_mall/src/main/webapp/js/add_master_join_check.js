@@ -9,9 +9,10 @@ function ajoin() {
     var adept = document.querySelector('select[name="adept"]').value;
     var aposition = document.querySelector('select[name="aposition"]').value;
 	
+	
     //빈칸 확인
 	if(aid=="" || apass=="" || aname=="" || aemail=="" || atel==""|| adept=="" || aposition==""){
-		alert("모든 정보란을 입력해주세요!");		
+		alert("모든 정보란을 입력해주세요!");
 	}
     //비밀번호 체크
 	else if(apass != passck){
@@ -27,4 +28,30 @@ function ajoin() {
 
 function joinreset(){
 	location.href="./index.do"
+}
+
+
+//아이디 중복체크
+function checkId() {
+    var aid = document.querySelector('input[name="aid"]').value;
+    var checkResultSpan = document.getElementById("checkidResult");
+
+    $.ajax({
+        url: '/checkId.do',
+        type: 'POST',
+        data: { aid: aid },
+        success: function(response) {
+            if (response.trim() === "사용 가능한 아이디입니다!") {
+                checkResultSpan.innerHTML = "<font color='blue'>사용 가능</font>";
+            } else if (response.trim() === "중복된 아이디입니다.") {
+                checkResultSpan.innerHTML = "<font color='red'>중복된 아이디입니다</font>";
+            } else {
+                checkResultSpan.innerHTML = "<font color='red'>오류 발생</font>";
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            checkResultSpan.innerHTML = "<font color='red'>서버와의 통신 오류 발생</font>";
+        }
+    });
 }

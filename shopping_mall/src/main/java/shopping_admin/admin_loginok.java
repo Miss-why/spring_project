@@ -1,6 +1,5 @@
 package shopping_admin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,8 +7,6 @@ import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.ejshop.www.user_dao;
 
 // login id 및 pw 확인 module
 @Repository("adminlogin")
@@ -40,4 +37,6 @@ public class admin_loginok {
 		return result;
 
 	}
+	
+	
 }
