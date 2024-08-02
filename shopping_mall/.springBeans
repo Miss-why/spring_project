@@ -7,7 +7,6 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
-		<config>src/main/webapp/WEB-INF/spring/appServlet/dbconfig.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/dbconfig_ejshop.xml</config>
 	</configs>
 	<autoconfigs>

@@ -66,5 +66,12 @@
     </section>
 </form>
 </body>
+<script>
+function checkId(){
+	join_frm.method = "post";
+    join_frm.action = "./ajoinok.do";
+    join_frm.submit();
+}
+</script>
 <script src="./js/add_master_join_check.js?v=1"></script>
 </html>

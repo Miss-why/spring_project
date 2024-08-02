@@ -1,17 +1,13 @@
-package shopping_admin;
+package admin;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,44 +21,52 @@ public class admin_controller {
 	PrintWriter pw =null;
 	
 	//do파일로 jsp파일 실행
-	@RequestMapping("/shoping_admin/add_master.do")
-	public ModelAndView add_master() {
-		ModelAndView mv = new ModelAndView("./shoping_admin/add_master");
-		return mv;
+	@RequestMapping("/admin/add_master.do")
+	public String add_master(Model m) {
+		return "/add_master";
 	}
-	@RequestMapping("/shoping_admin/admin_list.do")
-	public ModelAndView admin_list() {
-		ModelAndView mv = new ModelAndView("./shoping_admin/admin_list");
-		return mv;
+	@RequestMapping("/admin/admin_list.do")
+	public String admin_list() {
+		return "/admin_list";
 	}
-	@RequestMapping("/shoping_admin/index.do")
-	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView("./shoping_admin/index");
-		return mv;
+	@RequestMapping("/admin/index.do")
+	public String index() {
+		return "/index";
 	}
-	@RequestMapping("/shoping_admin/admin_siteinfo.do")
-	public ModelAndView siteinfo() {
-		ModelAndView mv = new ModelAndView("./shoping_admin/admin_siteinfo");
-		return mv;
+	@RequestMapping("/admin/admin_siteinfo.do")
+	public String siteinfo() {
+		return "/admin_siteinfo";
 	}
-	
-	
+
 	//패스워드 암호화(MD5)
 	@Resource(name="md5pw")
 	private md5 md;
 	@Resource (name="adminlogin")
 	private admin_loginok al;
 	
+    // 아이디 중복 체크
+	@PostMapping("/admin/add_master.do")
+	@ResponseBody
+	public String checkId(@RequestParam("aid") String aid) {
+		String result = "";
+		try {
+			result = jm.checkid(aid);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 로그 기록
+			result = "아이디 중복 체크 중 오류가 발생했습니다.";
+		}
+		return result;
+	}
 	
 	//관리자 회원가입
 	@Resource(name="admin_joinok")
 	private ajoinok jm; //관리자 회원가입 module
 	
-	@Autowired
+	@Resource(name="ajoin_dao")
 	private admin_user_dao aud;
 	
-	@PostMapping("/ajoinok.do")
-	private ArrayList<Object> admin_join(@ModelAttribute admin_user_dao dao, HttpServletResponse res) throws Exception {
+	@PostMapping("/admin/ajoinok.do")
+	private ArrayList<Object> admin_join(admin_user_dao dao, HttpServletResponse res) throws Exception {
 		res.setContentType("text/html;charset=utf-8");
 		this.pw= res.getWriter();
 		try {
@@ -85,22 +89,9 @@ public class admin_controller {
 		return null;
 	}
 	
-    // 아이디 중복 체크
-	@PostMapping("/checkid.do")
-	@ResponseBody
-	public String checkId(@RequestParam("aid") String aid) {
-		String result = "";
-		try {
-			result = jm.checkid(aid);
-		} catch (Exception e) {
-			e.printStackTrace(); // 예외 로그 기록
-			result = "아이디 중복 체크 중 오류가 발생했습니다.";
-		}
-		return result;
-	}
 	
 	//로그인
-	@PostMapping("/shopping_admin/admin_main.do")
+	@PostMapping("/admin_main.do")
 	private String admin_login(String aid, String apass, HttpServletResponse res) throws Exception{
 			res.setContentType("text/html;charset=utf-8");
 			this.pw = res.getWriter();

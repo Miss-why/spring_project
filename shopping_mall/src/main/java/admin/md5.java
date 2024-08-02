@@ -1,4 +1,4 @@
-package shopping_admin;
+package admin;
 
 import java.security.MessageDigest;
 

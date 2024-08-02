@@ -1,4 +1,4 @@
-package shopping_admin;
+package admin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class admin_loginok {
 		System.out.println(encryptpw);
 		
 		String result = "";
-		admin_user_dao dao = tm.selectOne("Shopping_admin.admin_login", keycode);
+		admin_user_dao dao = tm.selectOne("admin.admin_login", keycode);
 		String dbid = dao.getAid();
 		String dbpass = dao.getApass();
 		if(dbid.equals(aid) && dbpass.equals(encryptpw)) {

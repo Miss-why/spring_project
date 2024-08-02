@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="Shopping_admin">
+<mapper namespace="admin">
 
 <!-- 관리자 회원가입 아이디 중복체크 -->
-<select id="aid_check">
-select count(*) from admin_join where aid=#{aid}
+<select id="aid_check" resultType="int">
+select count(*) as ctn from admin_join where aid=#{aid}
 </select>
 
 
