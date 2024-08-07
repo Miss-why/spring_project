@@ -41,30 +41,38 @@ public class admin_controller {
 	//패스워드 암호화(MD5)
 	@Resource(name="md5pw")
 	private md5 md;
-	@Resource (name="adminlogin")
-	private admin_loginok al;
 	
-    // 아이디 중복 체크
-	@PostMapping("/admin/add_master.do")
-	@ResponseBody
-	public String checkId(@RequestParam("aid") String aid) {
-		String result = "";
-		try {
-			result = jm.checkid(aid);
-		} catch (Exception e) {
-			e.printStackTrace(); // 예외 로그 기록
-			result = "아이디 중복 체크 중 오류가 발생했습니다.";
-		}
-		return result;
-	}
+	//관리자 로그인 모듈
+	@Resource (name="admin_loginok")
+	private aloginok lm;
 	
-	//관리자 회원가입
+	//관리자 회원가입 모듈
 	@Resource(name="admin_joinok")
-	private ajoinok jm; //관리자 회원가입 module
+	private ajoinok jm;
 	
+	//DAO
 	@Resource(name="ajoin_dao")
 	private admin_user_dao aud;
 	
+    // 아이디 중복 체크
+	@PostMapping("/admin/idcheck.do")
+	public String idcheck(HttpServletResponse res, @RequestParam("aid") String aid) throws Exception {
+		int result = jm.checkid(aid); // 모듈에서 결과값 받는 코드
+		res.setContentType("text/html;charset=utf-8");
+		this.pw = res.getWriter();
+		try {
+			if(result == 0) {
+				this.pw.print("ok");}
+			else {
+				this.pw.print("no");
+			}
+		} catch (Exception e) {
+			this.pw.print("error");
+		}
+		return null;
+	}
+	
+	//관리자 회원가입
 	@PostMapping("/admin/ajoinok.do")
 	private ArrayList<Object> admin_join(admin_user_dao dao, HttpServletResponse res) throws Exception {
 		res.setContentType("text/html;charset=utf-8");
@@ -74,15 +82,16 @@ public class admin_controller {
 			if (callback > 0) {
 				this.pw.print(
 						"<script>" 
-						+ "alert('정상적으로 등록 완료 되었습니다.');"
+						+ "alert('관리자로 정상 등록 되었습니다.');"
 						+ "location.href='./index.do';" 
 						+ "</script>");
 		}
 		}catch(Exception e) {
 			this.pw.print("<script>"
-					+ "alert('DB 오류로 인하여 등록되지 않았습니다.');"
+					+ "alert('DB 오류로 인하여 관리자에 등록되지 않았습니다.');"
 					+ "location.href='./add_master.do';"
 					+ "</script>");
+			System.out.println(e);
 		}finally {
 			this.pw.close();
 		}
@@ -90,24 +99,16 @@ public class admin_controller {
 	}
 	
 	
-	//로그인
-	@PostMapping("/admin_main.do")
-	private String admin_login(String aid, String apass, HttpServletResponse res) throws Exception{
+	//관리자 로그인
+	@PostMapping("/admin/admin_main.do")
+	private String admin_login(@RequestParam("aid") String aid, @RequestParam("apass") String apass, HttpServletResponse res) throws Exception{
 			res.setContentType("text/html;charset=utf-8");
+//System.out.println(aid); //jsp에서 넘어오는 친구들
+//System.out.println(apass);
 			this.pw = res.getWriter();
 			try {
-				if(aid=="" || apass=="") {
-				this.pw.print("<script>"
-						+"alert('관리자 아이디와 비밀번호를 모두 입력해주세요.');"
-						+"history.go(-1);"
-						+"</script>");
-				}
-				else {
-					String encryptpw = md.md5_makeing(apass);
-					//System.out.println(encryptpw);
-					String loginuserdata = al.login_admin(aid, encryptpw);
-					
-				}
+					String loginuserdata = lm.login_admin(aid, apass); // 모듈에서 결과값 받는 코드
+					//System.out.println(loginuserdata);
 			}
 			catch (Exception e) {
 				System.out.println(e);

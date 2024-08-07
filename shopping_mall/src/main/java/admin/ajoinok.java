@@ -6,7 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-//관리자 회원가입 정보를 DB로 넘기는 Module
+//관리자 회원가입 Module
 @Repository("admin_joinok")
 public class ajoinok {
 
@@ -16,17 +16,16 @@ public class ajoinok {
 	@Resource(name="md5pw")
 	private md5 md;
 	
+	
 	//관리자 아이디 중복체크
-		public String checkid(String aid) {
+	public int checkid(String aid) {
 			try {
 				int result = tm.selectOne("admin.aid_check", aid);
-				System.out.println(result);
-				return result > 0 ? "중복된 아이디입니다." : "사용 가능한 아이디입니다.";
+				return result;
 			} catch (Exception e) {
-				e.printStackTrace(); // 예외 로그 기록
-				return "아이디 중복 체크 중 오류가 발생했습니다.";
+				return -1;
 			}
-		}
+	}
 	
 	//DB에 회원가입에서 넘어온 DAO값 저장
 	public int admin_insert(admin_user_dao dao) {

@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -6,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script src="./js/jquery.js"></script>
 <body>
 <form id="join_frm">
     <section class="admin_bgcolor_add">
@@ -13,9 +15,8 @@
             <ul>
                 <li class="font_color1">아이디 및 패스워드 정보</li>
                 <li>
-                <input type="text" id="memberId" name="aid" class="add_input1" placeholder="생성할 관리자 아이디를 입력하세요">
-                <button type="button" class="btn_button" onclick="checkId()">중복체크</button>
-                <br><span id="checkidResult"></span>
+                <input type="text" id="aid" name="aid" class="add_input1" placeholder="생성할 관리자 아이디를 입력하세요">
+                <input type="button" class="btn_button" id="btn5" value="중복체크">
                 </li>
                 <li>
                     <input type="password" name="apass" class="add_input1" placeholder="접속할 패스워드를 입력하세요">
@@ -66,12 +67,8 @@
     </section>
 </form>
 </body>
-<script>
-function checkId(){
-	join_frm.method = "post";
-    join_frm.action = "./ajoinok.do";
-    join_frm.submit();
-}
-</script>
-<script src="./js/add_master_join_check.js?v=1"></script>
+<%
+Date today = new Date();
+%>
+<script src="/js/add_master_body.js?v=<%=today%>"></script>
 </html>

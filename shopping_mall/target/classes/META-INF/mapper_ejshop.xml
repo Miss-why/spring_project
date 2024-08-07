@@ -16,15 +16,7 @@ values ('0',#{aid},#{apass},#{aname},#{aemail},#{atel},#{adept},#{aposition},now
 
 <!-- 관리자 로그인 -->
 <select id="admin_login" parameterType="Map" resultType="adminuserdao">
-select * from admin_join
-<choose>
-	<when test="part==admin">
-		where aid=#{aid} and apass=#{apass} and authz=#{authz}
-	</when>
-	<otherwise>
-		order by aidx desc
-	</otherwise>
-</choose>
+select * from admin_join where aid=#{aid} and apass=#{apass} order by aidx desc
 </select>
 
 </mapper>

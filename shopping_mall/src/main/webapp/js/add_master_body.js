@@ -31,27 +31,37 @@ function joinreset(){
 }
 
 
-//아이디 중복체크
-function checkId() {
-    var aid = document.querySelector('input[name="aid"]').value;
-    var checkResultSpan = document.getElementById("checkidResult");
-
-    $.ajax({
-        url: '/checkId.do',
-        type: 'POST',
-        data: { aid: aid },
-        success: function(response) {
-            if (response.trim() === "사용 가능한 아이디입니다!") {
-                checkResultSpan.innerHTML = "<font color='blue'>사용 가능</font>";
-            } else if (response.trim() === "중복된 아이디입니다.") {
-                checkResultSpan.innerHTML = "<font color='red'>중복된 아이디입니다</font>";
-            } else {
-                checkResultSpan.innerHTML = "<font color='red'>오류 발생</font>";
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-            checkResultSpan.innerHTML = "<font color='red'>서버와의 통신 오류 발생</font>";
-        }
-    });
-}
+//ID중복체크
+$(function() {
+	$("#btn5").click(function() {
+		if ($("#aid").val() == "" || $("#aid").val() == null) {
+			alert("중복확인할 아이디를 입력해주세요.")
+		}
+		else {
+			$.ajax({
+				url: "/admin/idcheck.do",
+				type: "post",
+				dataType: "text",
+				data: {
+					aid: $("#aid").val()
+				},
+				contentType: "application/x-www-form-urlencoded",
+				success: function($result) {
+					//console.log($result)
+					if ($result == "ok") {
+						alert("사용 가능한 아이디입니다.")
+					}
+					else if ($result == "no") {
+						alert("중복된 아이디입니다. 다른 아이디를 사용해주세요!!")
+					}
+					else {
+						alert("아이디 중복체크 중 error 발생!!")
+					}
+				},
+				error: function() {
+					alert("통신오류발생으로 인해 아이디 중복체크되지 않습니다.");
+				}
+			});
+		}
+	});
+});
