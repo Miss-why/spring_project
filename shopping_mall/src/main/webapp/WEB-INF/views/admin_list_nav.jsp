@@ -10,10 +10,10 @@
 <nav class="navcss">
     <div class="nav_div">
         <ol>
-            <li title="쇼핑몰 상품관리">쇼핑몰 관리자 리스트</li>
-            <li title="쇼핑몰 회원관리">쇼핑몰 회원관리</li>
-            <li title="쇼핑몰 상품관리">쇼핑몰 상품관리</li>
-            <li title="쇼핑몰 기본설정">쇼핑몰 기본설정</li>
+            <li title="쇼핑몰 상품관리"><a href="/admin/admin_list.do">쇼핑몰 관리자 리스트</a></li>
+            <li title="쇼핑몰 회원관리"><a href="/admin/shop_member_list.do">쇼핑몰 회원관리</a></li>
+            <li title="쇼핑몰 상품관리"><a href="/admin/admin_product.do">쇼핑몰 상품관리</a></li>
+            <li title="쇼핑몰 기본설정"><a href="/admin/admin_config.do">쇼핑몰 기본설정</a></li>
         </ol>
     </div>
 </nav>

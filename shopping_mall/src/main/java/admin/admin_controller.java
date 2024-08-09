@@ -2,8 +2,11 @@ package admin;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -49,6 +52,10 @@ public class admin_controller {
 	//관리자 회원가입 모듈
 	@Resource(name="admin_joinok")
 	private ajoinok jm;
+	
+	//관리자 등록 리스트 메인 모듈
+	@Resource (name="admin_listok")
+	private alistok listm;
 	
 	//DAO
 	@Resource(name="ajoin_dao")
@@ -103,15 +110,28 @@ public class admin_controller {
 	@PostMapping("/admin/admin_main.do")
 	private String admin_login(@RequestParam("aid") String aid, @RequestParam("apass") String apass, HttpServletResponse res) throws Exception{
 			res.setContentType("text/html;charset=utf-8");
-//System.out.println(aid); //jsp에서 넘어오는 친구들
-//System.out.println(apass);
+			//System.out.println(aid); //jsp에서 넘어오는 친구들
+			//System.out.println(apass);
 			this.pw = res.getWriter();
 			try {
-					String loginuserdata = lm.login_admin(aid, apass); // 모듈에서 결과값 받는 코드
-					//System.out.println(loginuserdata);
+				int result = lm.login_admin(aid, apass); // 모듈에서 결과값 받는 코드
+				if (result == -2) {
+					this.pw.print("<script>" + "alert('가입완료 후 전산 담당자가 승인을 해야 로그인 할 수 있습니다. 아직 승인되지 않았습니다.');"
+							+ "history.go(-1);" + "</script>");
+				} else if (result == -1) {
+					this.pw.print("<script>" + "alert('관리자 아이디 및 패스워드를 확인하세요!!');" + "history.go(-1);" + "</script>");
+				} else if (result == 1) {
+					if (aid.equals("master")) {
+						this.pw.print("<script>" + "alert('최고관리자 로그인 완료되었습니다.');" + "location.href='./admin_list.do';"
+								+ "</script>");
+					} else {
+						this.pw.print("<script>" + "alert('관리자 로그인 완료되었습니다.');"
+								+ "location.href='./shop_member_list.do';" + "</script>");
+					}
+				}
 			}
 			catch (Exception e) {
-				System.out.println(e);
+				//System.out.println(e);
 				this.pw.print("<script>"
 						+"alert('Database 문제로 인하여 해당 정보가 확인되지 않습니다.');"
 						+"history.go(-1);"
@@ -123,4 +143,28 @@ public class admin_controller {
 			return null;
 		}
 	
+	
+
+	//관리자 등록 리스트(master)
+	@PostMapping("/admin/alistok.do")
+	private String admin_list(int aidx, Model m, HttpServletResponse res) throws Exception{
+		this.pw= res.getWriter();
+		List<admin_user_dao> all = listm.admin_lis
+		admin_user_dao dao=null;
+		if(aidx != null) { 
+			dao = listm.
+			m.addAttribute("area1",dao.adix+"px");
+			m.addAttribute("area2",dao.aname+"px");
+			m.addAttribute("area3",dao.adix+"px");
+			m.addAttribute("area4",dao.atel+"px");
+			m.addAttribute("area5",dao.aemail+"px");
+			m.addAttribute("area6",dao.adept+"px");
+			m.addAttribute("area7",dao.aposition+"px");
+			m.addAttribute("area8",dao.ajoindate+"px");
+			m.addAttribute("area9",dao.authz+"px");
+		}
+		m.addAttribute("all",all);
+		return null;
+    }
 }
+

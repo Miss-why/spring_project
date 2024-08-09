@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="admin_title">
-        <p><img src="./img/logo.png" class="logo_sm"> ADMINISTRATOR</p>
+        <p><img src="./img/logo.png" class="logo_sm"><a href="./index.do"> ADMINISTRATOR</a></p>
     </header>
 </body>
 </html>

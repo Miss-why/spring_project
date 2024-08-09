@@ -7,7 +7,6 @@
 select count(*) as ctn from admin_join where aid=#{aid}
 </select>
 
-
 <!-- 관리자 등록 --> 
 <insert id="admin_insert">
 insert into admin_join (aidx,aid,apass,aname,aemail,atel,adept,aposition,ajoindate,authz)
@@ -17,6 +16,11 @@ values ('0',#{aid},#{apass},#{aname},#{aemail},#{atel},#{adept},#{aposition},now
 <!-- 관리자 로그인 -->
 <select id="admin_login" parameterType="Map" resultType="adminuserdao">
 select * from admin_join where aid=#{aid} and apass=#{apass} order by aidx desc
+</select>
+
+<!-- 관리자 등록 리스트(master) -->
+<select id="admin_list" parameterType="Integer" resultType="adminuserdao">
+select * from admin_join where aidx=#{aidx} order by aidx desc
 </select>
 
 </mapper>
