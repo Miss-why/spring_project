@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopadmin">
+	
+	<select id="search_hp_info" resultType="homepagedao">
+		select * from homepage where homekey = '1';
+	</select>
+	
+	<select id="search" parameterType="Map" resultType="admindao">
+		select * from admin_member
+		<choose>
+			<when test="part==1">
+				where amid = #{amid}
+			</when>
+			<when test="part==2">
+				where amid = #{amid} and ampass = #{ampass}
+			</when>
+			<otherwise>
+				where amcheck = '2' order by amidx desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="signup_insert">
+		insert into admin_member (amidx, amcheck, amid, ampass, amname, amemail, amphone, amdepartment, amposition, amloginck, amindate) 
+		values ('0', '2', #{amid}, #{ampass}, #{amname}, #{amemail}, #{amphone}, #{amdepartment}, #{amposition}, 'N', now())
+	</insert>
+	
+	<insert id="insert_hp_info">
+		insert into homepage (homekey, hometitle, adminemail, usepointck, signpoint, signlevel, compamy_name, business_regist_number, president_name, 
+		president_phone, mailorder_report_number, telecom_busi_number, business_zipcode, business_address, infomanager_name, infomanager_email, 
+		non_account_bank, bank_account_number, ckuse_credit_card, ckuse_mobile_phone, ckuse_book_gift_pay, min_pay_points, max_pay_points, 
+		ckuse_cash_receipt, delivery_compamy_name, delivery_fee_price, ckuse_desired_deldate) 
+		values ('1', #{hometitle}, #{adminemail}, #{usepointck}, #{signpoint}, #{signlevel}, #{compamy_name}, #{business_regist_number}, #{president_name}, 
+		#{president_phone}, #{mailorder_report_number}, #{telecom_busi_number}, #{business_zipcode}, #{business_address}, #{infomanager_name}, #{infomanager_email}, 
+		#{non_account_bank}, #{bank_account_number}, #{ckuse_credit_card}, #{ckuse_mobile_phone}, #{ckuse_book_gift_pay}, #{min_pay_points}, #{max_pay_points}, 
+		#{ckuse_cash_receipt}, #{delivery_compamy_name}, #{delivery_fee_price}, #{ckuse_desired_deldate})
+	</insert>
+	
+	<update id="admin_loginck">
+		update admin_member set 
+		<if test='ck=="Y"'>
+			amloginck = 'Y' 
+		</if>
+		<if test='ck=="N"'>
+			amloginck = 'N' 
+		</if>
+		where amidx = #{amidx}
+	</update>
+	
+	<update id="update_hp_info">
+		update homepage set hometitle = #{hometitle}, adminemail = #{adminemail}, usepointck = #{usepointck}, signpoint = #{signpoint}, signlevel = #{signlevel}, compamy_name = #{compamy_name}, 
+		business_regist_number = #{business_regist_number}, president_name = #{president_name}, president_phone = #{president_phone}, mailorder_report_number = #{mailorder_report_number}, 
+		telecom_busi_number = #{telecom_busi_number}, business_zipcode = #{business_zipcode}, business_address = #{business_address}, infomanager_name = #{infomanager_name}, 
+		infomanager_email = #{infomanager_email}, non_account_bank = #{non_account_bank}, bank_account_number = #{bank_account_number}, ckuse_credit_card = #{ckuse_credit_card}, 
+		ckuse_mobile_phone = #{ckuse_mobile_phone}, ckuse_book_gift_pay = #{ckuse_book_gift_pay}, min_pay_points = #{min_pay_points}, max_pay_points = #{max_pay_points}, 
+		ckuse_cash_receipt = #{ckuse_cash_receipt}, delivery_compamy_name = #{delivery_compamy_name}, delivery_fee_price = #{delivery_fee_price}, ckuse_desired_deldate = #{ckuse_desired_deldate} 
+		where homekey = '1';
+	</update>
+	
+</mapper>
