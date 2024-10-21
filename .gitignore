@@ -1,1 +1,3 @@
 /.metadata/
+/shopping_mall/src/main/resources/email_auth.properties
+/shopping_mall/target/classes/email_auth.properties
