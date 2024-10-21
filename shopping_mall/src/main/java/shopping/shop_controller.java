@@ -33,7 +33,14 @@ public class shop_controller extends password_sha3 {
 	PrintWriter pw = null;
 	
 	@GetMapping("/")
-	public String shop_index(Model m) {
+	public String shop_index(@SessionAttribute(required = false, name = "userSessionData") ArrayList<Object> udata,
+			Model m) {
+		String userName = "";
+		if (udata != null) {
+			System.out.println(udata);
+			userName = (String) udata.get(2);
+		}
+		m.addAttribute("userName", userName);
 		m.addAttribute("catelist", this.pdmd.menu_catelist());
 		m.addAttribute("productlist", this.pdmd.main_prolist());
 		m.addAttribute("hpInfo", this.usmd.getHomepageInfo());
@@ -41,12 +48,26 @@ public class shop_controller extends password_sha3 {
 	}
 	
 	@GetMapping("/agree")
-	public String shop_agree(Model m) {
+	public String shop_agree(@SessionAttribute(required = false, name = "userSessionData") ArrayList<Object> udata,
+			Model m, HttpServletResponse res) throws Exception {
+		res.setContentType("text/html; charset=UTF-8");
+		if (udata != null) {
+			this.pw = res.getWriter();
+			this.pw.print("<script>alert('올바른 접근 방식이 아닙니다.'); location.href = './';</script>");
+			this.pw.close();
+		}
 		m.addAttribute("hpInfo", this.usmd.getHomepageInfo());
 		return "shopping/agree";
 	}
 	@GetMapping("/login")
-	public String shop_login(Model m) {
+	public String shop_login(@SessionAttribute(required = false, name = "userSessionData") ArrayList<Object> udata,
+			Model m, HttpServletResponse res) throws Exception {
+		res.setContentType("text/html; charset=UTF-8");
+		if (udata != null) {
+			this.pw = res.getWriter();
+			this.pw.print("<script>alert('올바른 접근 방식이 아닙니다.'); location.href = './';</script>");
+			this.pw.close();
+		}
 		m.addAttribute("hpInfo", this.usmd.getHomepageInfo());
 		return "shopping/login";
 	}
@@ -117,9 +138,9 @@ public class shop_controller extends password_sha3 {
 		try {
 			malluser_dao userdao = this.usmd.login_user(user_id, this.encodePass(user_pw));
 			if (userdao.getLogin_status().equals("정상")) {
-				//htss.setAttribute("userSessionData", userdao.toSessionList());
-				//htss.setMaxInactiveInterval(1800);
-				this.pw.print("<script>alert('로그인 성공하셨습니다.'); location.href = './admin_main.do';</script>");					
+				htss.setAttribute("userSessionData", userdao.toSessionList());
+				htss.setMaxInactiveInterval(1800);
+				this.pw.print("<script>alert('로그인 성공하셨습니다.'); location.href = './';</script>");					
 			}
 			else {
 				this.pw.print("<script>alert('해당 고객님은 현재 계정이 정지된 상황 입니다. 고객센터에 문의하세요.'); history.go(-1);</script>");
@@ -129,6 +150,16 @@ public class shop_controller extends password_sha3 {
 		} finally {
 			this.pw.close();
 		}
+	}
+	
+	@GetMapping("/user_logout.do")
+	public void user_logout(@SessionAttribute(required = true, name = "userSessionData") ArrayList<Object> udata,
+			HttpServletResponse res, HttpSession htss) throws Exception {
+		res.setContentType("text/html; charset=UTF-8");
+		htss.removeAttribute("userSessionData");
+		this.pw = res.getWriter();
+		this.pw.print("<script>alert('로그아웃하셨습니다.'); location.href = './';</script>");
+		this.pw.close();
 	}
 	
 	@GetMapping("/admin_main.do")

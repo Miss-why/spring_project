@@ -53,6 +53,6 @@ public class user_module {
 		this.keycode.put("uid", id);
 		this.keycode.put("upass", pw);
 		malluser_dao dao = this.sstm.selectOne("shopuser.user_search", this.keycode);
-		return null;
+		return dao;
 	}
 }

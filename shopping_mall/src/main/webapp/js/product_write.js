@@ -18,7 +18,7 @@ function codeck_ajax() {
 				}
 			}
 			else {
-				alert("사용 불가능한 아이디입니다.");
+				alert("사용 불가능한 상품코드입니다.");
 			}
 		}
 	}

@@ -21,8 +21,7 @@
 회사명 : ${ hpInfo.getCompamy_name() }
 대표자 : ${ hpInfo.getPresident_name() } | ${ hpInfo.getPresident_phone() }
 주소 : (${ hpInfo.getBusiness_zipcode() }) ${ hpInfo.getBusiness_address() } <br>
-고객센터 : 
-상담시간 : 
+<a href="#">고객센터</a> | 상담시간 : 상담시간 : (10:00 ~ 19:00까지) 단, 12:00 ~ 13:00 점심시간
 E-Mail : ${ hpInfo.getAdminemail() }
 사업자등록번호 : ${ hpInfo.getBusiness_regist_number() } <br>
 통신판매업신고번호 : ${ hpInfo.getMailorder_report_number() }

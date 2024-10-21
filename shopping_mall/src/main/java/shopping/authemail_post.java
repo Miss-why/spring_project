@@ -44,7 +44,7 @@ public class authemail_post {
 			msg.setFrom(new InternetAddress(this.prpt.getProperty("frommail"), this.prpt.getProperty("fromname")));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(this.user_email));
 			msg.setSubject(this.subject);
-			msg.setText(this.mailtext + this.securitycode);
+			msg.setContent(this.mailtext + this.securitycode, "text/html; charset=UTF-8");
 			Transport.send(msg);
 			result = "ok";
 		} catch (Exception e) {

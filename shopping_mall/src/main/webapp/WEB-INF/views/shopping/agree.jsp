@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <title>Shop Bag</title>
+    <title>${ hpInfo.getHometitle() }</title>
     <meta charset="utf-8" />
     <link href="../css/shopping/index.css" rel="stylesheet" />
     <link href="../css/shopping/subpage.css" rel="stylesheet" />
