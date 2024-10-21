@@ -20,8 +20,7 @@
 			</cr:forEach>
 		</ul>
 	</div>
-</nav>
- <main>
+</nav> <main>
     <div class="hero-header"></div>  
     <div class="products">
       <h3>NEW PRODUCTS</h3>
